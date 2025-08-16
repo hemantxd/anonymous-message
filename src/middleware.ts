@@ -13,12 +13,21 @@ export async function middleware(request: NextRequest) {
     url.pathname.startsWith('/sign-in') ||
     url.pathname.startsWith('/sign-up') ||
     url.pathname.startsWith('/verify') ||
-    url.pathname.startsWith('/')
+    url.pathname === '/'
   ) ){
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  return NextResponse.redirect(new URL('/home', request.url))
+// ✅ If user is NOT authenticated and trying to access protected routes
+  if (
+    !token &&
+    url.pathname.startsWith('/dashboard')
+  ) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  // ✅ Otherwise, allow access
+  return NextResponse.next();
 }
  
 export const config = {
