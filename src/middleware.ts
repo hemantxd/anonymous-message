@@ -19,12 +19,12 @@ export async function middleware(request: NextRequest) {
   }
 
 // ✅ If user is NOT authenticated and trying to access protected routes
-  if (
-    !token &&
-    url.pathname.startsWith('/dashboard')
-  ) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
+  // if (
+  //   !token &&
+  //   url.pathname.startsWith('/dashboard')
+  // ) {
+  //   return NextResponse.redirect(new URL('/', request.url));
+  // }
 
   // ✅ Otherwise, allow access
   return NextResponse.next();
