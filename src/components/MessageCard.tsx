@@ -40,7 +40,7 @@ const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
         
         const response = await axios.delete(`/api/delete-message/${message._id}`)
         toast.success(response.data.message)
-        onMessageDelete(message._id)
+        onMessageDelete(message._id.toString())
     }
 
 
