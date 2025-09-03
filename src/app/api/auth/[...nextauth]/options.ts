@@ -11,20 +11,20 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
+        identifier: { label: "Email or Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         // Explicit null check to satisfy TS
-        if (!credentials?.email || !credentials?.password) {
+        if (!credentials?.identifier || !credentials?.password) {
           throw new Error("Missing email or password");
         }
         await dbConnect();
         try {
           const user = await UserModel.findOne({
             $or: [
-              //{ email: credentials.identifier },
-              { email: credentials?.email },
+              { username: credentials.identifier },
+              { email: credentials?.identifier },
             ],
           }).lean();
 
@@ -56,6 +56,9 @@ export const authOptions: NextAuthOptions = {
             id: user._id.toString(),
             email: user.email,
             name: user.username,
+            isVerified: user.isVerified,
+  isAcceptingMessage: user.isAcceptingMessage,
+  username: user.username,
           };
         } catch (error) {
           throw new Error("Invalid username or password");

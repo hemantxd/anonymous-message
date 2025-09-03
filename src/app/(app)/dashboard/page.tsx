@@ -1,5 +1,6 @@
 'use client'
 
+import { useSession } from 'next-auth/react';
 import MessageCard from '@/components/MessageCard';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -12,8 +13,7 @@ import axios, { AxiosError } from 'axios';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { set } from 'mongoose';
 import { User } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import React, { use, useCallback, useEffect } from 'react'
+import React, { use, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -27,7 +27,14 @@ const Dashboard = () => {
     setMessages(messages.filter((message) => message._id.toString() !== messageId));
 
   }
-const {data: session} = useSession()
+const { data: session, status } = useSession();
+
+useEffect(() => {
+  if (status === 'authenticated') {
+    console.log("Session loaded:", session);
+  }
+}, [status, session]);
+
 
     const form = useForm({
       resolver: zodResolver(acceptMessageSchema),
@@ -94,12 +101,28 @@ const {data: session} = useSession()
             setIsSwitchLoading(false);
           }
         } 
+        
+        console.log("hemantdon");
+        console.log("session : ", session)
 
-        const {username} = session?.user as User
+        const username = session?.user?.name ?? "";
+
+const [baseUrl, setBaseUrl] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(`${window.location.protocol}//${window.location.host}`);
+    }
+  }, []);
+
+  // profileUrl depends on baseUrl and username
+  const profileUrl = `${baseUrl}/u/${username}`;
+  console.log("Username:", username);
+  console.log("Profile URL:", profileUrl);
 
         //research
-        const baseUrl = `${window.location.protocol}//${window.location.host}` 
-        const profileUrl = `${baseUrl}/u/${username}`
+        // const baseUrl = `${window.location.protocol}//${window.location.host}` 
+        // const profileUrl = `${baseUrl}/u/${username}`
 
         const copyToClipboard = async () => {
           try {
@@ -109,10 +132,14 @@ const {data: session} = useSession()
             toast.error("Error copying profile URL to clipboard");
           }
         }
+         if (status === 'loading') {
+    return <div>Loading session...</div>;
+  }
 
         if(!session || !session.user) {
           return <div>Please Login</div>;
         }
+
 
   return (
     <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl'>
@@ -167,6 +194,8 @@ onClick={(e)=>{
   )}
 
 </Button>
+
+    
 
 
 <div className='mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 '>
