@@ -102,7 +102,7 @@ useEffect(() => {
           }
         } 
         
-        console.log("hemantdon");
+        
         console.log("session : ", session)
 
         const username = session?.user?.name ?? "";
