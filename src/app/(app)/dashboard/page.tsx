@@ -16,9 +16,12 @@ import { User } from 'next-auth';
 import React, { use, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+
 
 const Dashboard = () => {
 
+  const router = useRouter();
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [isSwitchLoading, setIsSwitchLoading] = React.useState<boolean>(false);
@@ -176,6 +179,10 @@ const [baseUrl, setBaseUrl] = useState("");
   <span className='ml-2'>Accept Messages: {acceptMessages ? "On" : "Off"} </span>
 
 
+</div>
+
+<div>
+  <Button className='mb-4' onClick={()=>router.push("/send-message")}>Send Message</Button>
 </div>
 
 <Separator />
