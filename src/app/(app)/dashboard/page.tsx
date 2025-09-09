@@ -64,6 +64,7 @@ useEffect(() => {
       setIsSwitchLoading(true);
         try {
           const response = await axios.get<ApiResponse>('/api/get-messages');
+          //console.log("Response : ", response);
           setMessages(response.data.messages || []);
 
           if(refresh) {
@@ -106,7 +107,7 @@ useEffect(() => {
         } 
         
         
-        console.log("session : ", session)
+        //console.log("session : ", session)
 
         const username = session?.user?.name ?? "";
 
@@ -120,12 +121,9 @@ const [baseUrl, setBaseUrl] = useState("");
 
   // profileUrl depends on baseUrl and username
   const profileUrl = `${baseUrl}/u/${username}`;
-  console.log("Username:", username);
-  console.log("Profile URL:", profileUrl);
+  //console.log("Username:", username);
+  //console.log("Profile URL:", profileUrl);
 
-        //research
-        // const baseUrl = `${window.location.protocol}//${window.location.host}` 
-        // const profileUrl = `${baseUrl}/u/${username}`
 
         const copyToClipboard = async () => {
           try {
@@ -207,6 +205,7 @@ onClick={(e)=>{
 
 <div className='mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 '>
   {
+    
     messages.length > 0 ? (
       messages.map((message, index) => (
         <MessageCard key={message.id} message={message} onMessageDelete={handleDeleteMessage} />

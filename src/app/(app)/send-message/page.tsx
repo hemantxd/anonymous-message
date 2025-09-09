@@ -25,7 +25,7 @@ const SendMessagePage = () => {
 
             const response = await axios.post<ApiResponse>("/api/send-message", {
                 profileUrl,
-                message
+                content : message
             })
 
             toast.success(response.data.message ?? "Message sent successfully");

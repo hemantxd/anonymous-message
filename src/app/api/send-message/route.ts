@@ -5,7 +5,13 @@ import { Message } from "@/model/User";
 
 export async function POST(request: Request){
     await dbConnect();
-    const {username, content} = await request.json();
+    const {profileUrl, content} = await request.json();
+
+    const username = profileUrl.split("/")[4];
+
+    console.log("Profile URL: ", profileUrl);
+    console.log("Username: ", username);
+
     
     try {
         const user = await UserModel.findOne({username: username});
@@ -22,6 +28,8 @@ export async function POST(request: Request){
             content: content,
             createdAt: new Date()
         }
+
+        console.log("New message: ", newMessage);
 
         user.messages.push(newMessage as Message);
         await user.save();
