@@ -71,11 +71,11 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
         </AlertDialog>
       </div>
 
-      <CardHeader>
+      {/* <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-800">
           Anonymous Message
         </CardTitle>
-      </CardHeader>
+      </CardHeader> */}
 
       <CardContent>
         <p className="text-gray-600 whitespace-pre-line leading-relaxed">
